@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 /**
- * Created by mannis on 04-Feb-18.
+ * Created by manni on 04-Feb-18.
  */
 
 public class Task {
@@ -40,7 +40,19 @@ public class Task {
         if(taskFraction <= timeFraction) {
             criticallity = 0;
         }
+        else {
+            criticallity = (taskFraction - timeFraction) * 100;
+        }
+
         return criticallity;
+    }
+
+    public void findColor(double criticallity) {
+        //return color;
+    }
+
+    public void setColor() {
+        //set color for task;
     }
 
     //edit: check if it returns the complete seconds.
