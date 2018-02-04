@@ -30,7 +30,7 @@ public class Task {
 
     //returns 0-100; 0 - not critical 100- most critical
     public double getCriticality() {
-        double criticallity;
+        double criticallity = 0;
         long totalTime = getTimeDiff(mStartTime, mTargetFinishTime);
         long remainingTime = getTimeDiff(LocalDateTime.now(), mTargetFinishTime);  //edit: check value, if now() is greater than target
 
