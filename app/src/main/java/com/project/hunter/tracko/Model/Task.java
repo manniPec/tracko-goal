@@ -40,6 +40,7 @@ public class Task {
         if(taskFraction <= timeFraction) {
             criticallity = 0;
         }
+        return criticallity;
     }
 
     //edit: check if it returns the complete seconds.
