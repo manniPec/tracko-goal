@@ -1,5 +1,8 @@
 package com.project.hunter.tracko.Model;
 
+import android.util.Log;
+
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
@@ -7,7 +10,7 @@ import java.time.temporal.ChronoUnit;
  * Created by manni on 04-Feb-18.
  */
 
-public class Task {
+public class Task implements Serializable {
     private String mTaskName;
     private String mTargetUnitType;
     private long mTargetNumberOfUnits;
@@ -59,6 +62,12 @@ public class Task {
     private long getTimeDiff(LocalDateTime startTime, LocalDateTime endTime) {
         long seconds = startTime.until( endTime, ChronoUnit.SECONDS);
         return seconds;
+    }
+
+    //debug
+    public void printInfo() {
+        String msgString = "I will" + " " + mTaskName + " " + mTargetNumberOfUnits + mTargetUnitType + " in " + (mStartTime.until(mTargetFinishTime, ChronoUnit.MINUTES)) + " minutes";
+        Log.d("TaskPrint", msgString);
     }
 }
 
