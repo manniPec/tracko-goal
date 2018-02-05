@@ -14,17 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.project.hunter.tracko.Model.Task;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,16 +89,53 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //adding tasks to the homepage
+
+//        String readS = readFromFile(this);
+//        Toast.makeText(context, "String: " + readS, Toast.LENGTH_LONG).show();
+
+//        FileInputStream fileInputStream = null;
+//        ObjectInputStream objectinputstream = null;
+//        taskList.clear();
+//        try {
+//            fileInputStream = new FileInputStream(taskListFile);
+//            objectinputstream = new ObjectInputStream(fileInputStream);
+//            Task readTask = null;
+//            do {
+//                readTask = (Task) objectinputstream.readObject();
+//                if(readTask != null){
+//                    taskList.add(readTask);
+//                }
+//            } while (readTask != null);
+//            objectinputstream.close();
+//            fileInputStream.close();
+//        } catch (Exception e) {
+//            Log.e(taskLogTag, "IO Exception during read");
+//            e.printStackTrace();
+//        }
+
+        //////////////////////*********************////
+//        Task newTask = new Task("run","km", 15, LocalDateTime.now(), LocalDateTime.now().plusMinutes(10));
+//        taskList.add(newTask);
+//        newTask = new Task("read","books", 25, LocalDateTime.now(), LocalDateTime.now().plusMinutes(15));
+//        taskList.add(newTask);
+//        newTask = new Task("shag","times", 100, LocalDateTime.now(), LocalDateTime.now().plusMinutes(45));
+//        taskList.add(newTask);
+        //////////////////////*********************////
+        printTaskList();
+
+
 //        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        View v = vi.inflate(R.layout.your_layout, null);
+//        LayoutInflater vi = getLayoutInflater();
+//        for(Task task: taskList) {
+//            View childTaskView = vi.inflate(R.layout.task_list_layout, null);
 //
-//// fill in any details dynamically here
-//        TextView textView = (TextView) v.findViewById(R.id.a_text_view);
-//        textView.setText("your text");
-//
+//            TextView textView = (TextView) childTaskView.findViewById(R.id.taskEntryTextView);
+//            textView.setText(task.getTaskDescription());
 //// insert into main view
-//        ViewGroup insertPoint = (ViewGroup) findViewById(R.id.insert_point);
-//        insertPoint.addView(v, 0, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.FILL_PARENT, ViewGroup.LayoutParams.FILL_PARENT));
+//        ViewGroup viewGroupForInsertion = (ViewGroup) findViewById(R.id.taskListViewGroup);
+//            viewGroupForInsertion.addView(childTaskView);
+//        }
+
 }
 
     @Override
@@ -158,26 +202,66 @@ public class MainActivity extends AppCompatActivity {
         else {
             Log.d(taskLogTag, "Need to create file");
         }
-        FileOutputStream fos = null;
+//        FileOutputStream fos = null;
+//        ObjectOutputStream os = null;
+//        try {
+//            if(!file.exists())
+//                file.createNewFile();
+//            fos = context.openFileOutput(taskListFile, openMode);
+//            os = new ObjectOutputStream(fos);
+//            os.writeObject(newTask);
+//            os.close();
+//            fos.close();
+//        } catch (IOException e) {
+//            Log.e(taskLogTag, "IO Exception");
+//            e.printStackTrace();
+//        }
+
         try {
-            fos = context.openFileOutput(taskListFile, openMode);
-        } catch (FileNotFoundException e) {
-            Log.e(taskLogTag, "File Not found");
-            e.printStackTrace();
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("config.txt", Context.MODE_PRIVATE));
+            outputStreamWriter.write("hello there");
+            outputStreamWriter.close();
         }
-        ObjectOutputStream os = null;
-        try {
-            os = new ObjectOutputStream(fos);
-            os.writeObject(newTask);
-            os.close();
-            fos.close();
-        } catch (IOException e) {
-            Log.e(taskLogTag, "IO Exception");
-            e.printStackTrace();
+        catch (IOException e) {
+            Log.e("Exception", "File write failed: " + e.toString());
         }
 
-        printTaskList();
-        Toast.makeText(context, Integer.toString(taskList.size()), Toast.LENGTH_LONG).show();
+//        String readS = readFromFile(this);
+//        Toast.makeText(context, "String: " + readS, Toast.LENGTH_LONG).show();
+
+
+//        printTaskList();
+//        Toast.makeText(context, Integer.toString(taskList.size()), Toast.LENGTH_LONG).show();
+    }
+
+    private String readFromFile(Context context) {      //edit: chori wala function delete
+
+        String ret = "";
+
+        try {
+            InputStream inputStream = context.openFileInput("config.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+
+        return ret;
     }
     
     //debug methods

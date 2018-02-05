@@ -64,10 +64,14 @@ public class Task implements Serializable {
         return seconds;
     }
 
+    public String getTaskDescription() {
+        return ("I will" + " " + mTaskName + " " + mTargetNumberOfUnits + mTargetUnitType + " in " + (mStartTime.until(mTargetFinishTime, ChronoUnit.MINUTES)) + " minutes");
+    }
+
     //debug
     public void printInfo() {
-        String msgString = "I will" + " " + mTaskName + " " + mTargetNumberOfUnits + mTargetUnitType + " in " + (mStartTime.until(mTargetFinishTime, ChronoUnit.MINUTES)) + " minutes";
-        Log.d("TaskPrint", msgString);
+//        String msgString = "I will" + " " + mTaskName + " " + mTargetNumberOfUnits + mTargetUnitType + " in " + (mStartTime.until(mTargetFinishTime, ChronoUnit.MINUTES)) + " minutes";
+        Log.d("TaskPrint", getTaskDescription());
     }
 }
 
